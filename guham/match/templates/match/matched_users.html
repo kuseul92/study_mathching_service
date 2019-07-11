@@ -1,0 +1,75 @@
+{% extends 'posts/base.html' %}
+{% load match_templatetag %}
+{% load staticfiles  %}
+{% load bootstrap_pagination %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+<div class="d-flex justify-content-center">
+    <div class="col-10">
+        <div class="mt-5" style="font-family: 'Noto Serif KR';text-align:center" >
+            <h2>매칭판</h2>
+        </div>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header" style="font-family: 'Noto Serif KR', serif;background-color:rgb(220,230,242)">
+            <h5 class="d-flex justify-content-center">My Match Post</h5>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+            <h1 class="d-flex justify-content-center"><a href="{% url 'accounts:user_page' my_post.user.id %}">{{ my_post.user }}</a></h1>
+            <div class="row d-flex align-items-center d-flex justify-content-center">
+                <div class="col-6 d-flex justify-content-center mt-3">
+                    {% if my_post.category == 'python' %}
+                    <img src="{% static 'python3.png' %}" alt="python">
+<!--                    <h5><strong>python</strong></h5>-->
+                    {% elif my_post.category == 'r' %}
+                    <img src="{% static 'r5.png'%}" alt="R">
+<!--                    <h5><strong>R</strong></h5>-->
+                    {% elif my_post.category == 'java' %}
+                    <img src="{% static 'java1.png'%}" alt="java">
+<!--                    <h5><strong>java</strong></h5>-->
+                    {% elif my_post.category == 'c' %}
+                    <img src="{% static 'c6.png'%}" alt="c">
+<!--                    <h5><strong>C</strong></h5>-->
+                    {% endif %}
+                </div>
+                <div class="col-6 d-flex justify-content-center align-items-center" style="text-align:center">
+                    <h3 style="font-family: 'Stylish', sans-serif;">{{ my_post.place }} </h3>
+                </div>
+            </div>
+
+        <div class="card-footer mt-4" style="font-family: 'Noto Serif KR', serif;">
+            <small class="text-muted">
+                {% if my_post.hash_tag.all %}
+                {% for hash_tag in my_post.hash_tag.all %}
+                <a href="{% url 'match:hash_tagged_posts' my_post.id hash_tag.id %}">{{hash_tag.content}}</a>
+                {% endfor %}
+                {% else %}
+                <div class="d-flex justify-content-center">
+                    <p style="font-family: 'Noto Serif KR';text-align:center"> 해시태그가 없군...</p>
+                </div>
+                {% endif %}
+            </small>
+        </div>
+    </div>
+            <hr>
+
+    <div class="row d-flex justify-content-center mt-5">
+        {% for post in posts %}
+            {% include 'match/_match_post.html' %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="d-flex justify-content-center" style="font-family: 'Noto Serif KR'">
+    {% bootstrap_paginate posts range=5 %}
+</div>
+<div class="d-flex justify-content-end">
+    <a href="{% url 'match:set_conditions' %}"><img src="{% static 'cancel.png' %}"></a>
+</div>
+
+{% endblock %}

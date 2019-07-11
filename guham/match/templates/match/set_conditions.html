@@ -1,0 +1,29 @@
+{% extends 'posts/base.html' %}
+{% load staticfiles  %}
+
+{% block title %}
+{% endblock %}
+
+{% block body %}
+{% load bootstrap4 %}
+
+<div class="d-flex justify-content-center">
+    <div class="col-8">
+        <div class="mt-5" style="font-family: 'Noto Serif KR';text-align:center" >
+            <h2>스터디원을 찾자!</h2>
+        </div>
+
+        <form action="{% url 'match:set_conditions' %}" method="POST" class="mt-5" style="font-family: 'Noto Serif KR'">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="d-flex justify-content-end">
+                {% buttons %}
+                    <button type="submit" class="btn btn-white"><img src="{% static 'submit.png' %}"></button>
+                    <a href="{% url 'posts:index' %}"><img src="{% static 'cancel.png' %}"></a>
+                {% endbuttons %}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
